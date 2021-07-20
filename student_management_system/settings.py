@@ -18,7 +18,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '(i#*06f#keydy_fh17bf=$0f6v)^wr
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
 ALLOWED_HOSTS = [
-    '*.herokuapp.com',
+    'learningdeck.herokuapp.com',
 ]
 
 
