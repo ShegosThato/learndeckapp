@@ -51,8 +51,8 @@ urlpatterns = [
     path('add_discussion', HodViews.add_discussion, name="add_discussion"),
     path('add_discussion_save', HodViews.add_discussion_save, name="add_discussion_save"),
     path('manage_discussions', HodViews.manage_discussions, name="manage_discussions"),
-    path('edit_discussion', HodViews.edit_discussion, name="edit_discussion"),
-    path('edit_discussion_save', HodViews.edit_discussion_save, name="edit_discussion_save"),
+    path('edit_discussion/<pk: post_id>', HodViews.edit_discussion, name="edit_discussion"),
+    path('edit_discussion_save/<pk: post_id>', HodViews.edit_discussion_save, name="edit_discussion_save"),
     
 
 
