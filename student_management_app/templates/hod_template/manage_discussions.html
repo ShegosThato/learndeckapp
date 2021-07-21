@@ -15,6 +15,10 @@ Manage Discussions
 
 
       <!-- general form elements -->
+      {% if not posts %}
+      <h4 class="display-4"> No Discussion</h4>
+     
+      {% else%}
       {% for post in posts %}
       <div class="row">
          <div class="card text-center shadow-lg p-3 mt-5 mb-1 bg-white " style="width: 80rem;">
@@ -28,6 +32,8 @@ Manage Discussions
          </div>
       </div>
       {% endfor %}
+      
+       {% endif%}
       <!-- /.card -->
 
 
