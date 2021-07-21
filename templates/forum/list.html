@@ -1,5 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>list page</h1>
+<div class="container">
+   <div class="jumbotron">
+      <h4 class="display-4">Post list</h4>
+   </div>
+
+   <div class="container">
+
+      {% for post in posts %}
+      <h4>{{ post.title}}</h4>
+      <small>{{ post.date_posted}}</small>
+      <p>{{ post.body}}</p>
+      <a href="{% url 'forum:post_detail' post.id %}">More</a>
+
+      {% endfor %}
+
+   </div>
+</div>
+
+
 {% endblock content %}

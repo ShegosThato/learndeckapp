@@ -5,8 +5,7 @@
   <a href="{% url 'student_home' %}" class="brand-link">
     <img src="{% static 'dist/img/AdminLTELogo.png' %}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
       style="opacity: .8">
-    <span class="brand-text font-weight-light">LearningDeck
-      LearningDeck</span>
+    <span class="brand-text font-weight-light">LearningDeck</span>
   </a>
 
   <!-- Sidebar -->
@@ -39,12 +38,33 @@
         </li>
 
         <li class="nav-item">
-          {% url 'student_view_attendance' as student_view_attendance %}
-          <a href="{{ student_view_attendance }}"
-            class="nav-link {% if request.path == student_view_attendance %} active {% endif %}">
+          {% url 'discussions' as discussions %}
+          <a href="{{ discussions }}" class="nav-link {% if request.path == discussions %} active {% endif %}">
+            <i class="nav-icon fas fa-comments"></i>
+            <p>
+              Discussions
+              {% comment %} <span class="right badge badge-danger">New</span> {% endcomment %}
+            </p>
+          </a>
+        </li>
+        <!--Content-->
+        <li class="nav-item">
+          {% url 'discussions' as discussions %}
+          <a href="{{ discussions }}" class="nav-link {% if request.path == discussions %} active {% endif %}">
             <i class="nav-icon fas fa-calendar-alt"></i>
             <p>
-              View Attendance
+              Content
+              {% comment %} <span class="right badge badge-danger">New</span> {% endcomment %}
+            </p>
+          </a>
+        </li>
+        <!--Assessments-->
+        <li class="nav-item">
+          {% url 'discussions' as discussions %}
+          <a href="{{ discussions }}" class="nav-link {% if request.path == discussions %} active {% endif %}">
+            <i class="nav-icon fas fa-edit"></i>
+            <p>
+              Assessments
               {% comment %} <span class="right badge badge-danger">New</span> {% endcomment %}
             </p>
           </a>

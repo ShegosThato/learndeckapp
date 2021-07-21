@@ -1,6 +1,6 @@
 from django import forms 
 from django.forms import Form
-from student_management_app.models import Courses, SessionYearModel
+from student_management_app.models import Courses, SessionYearModel, Post
 
 
 class DateInput(forms.DateInput):
@@ -91,3 +91,12 @@ class EditStudentForm(forms.Form):
     # session_start_year = forms.DateField(label="Session Start", widget=DateInput(attrs={"class":"form-control"}))
     # session_end_year = forms.DateField(label="Session End", widget=DateInput(attrs={"class":"form-control"}))
     profile_pic = forms.FileField(label="Profile Pic", required=False, widget=forms.FileInput(attrs={"class":"form-control"}))
+
+class PostForm(forms.ModelForm):
+    title = forms.CharField(label="Title of Discussion", max_length=50, widget=forms.TextInput(attrs={"class":"form-control"}))
+    body = forms.CharField(label="Discussion body", max_length=50, widget=forms.TextInput(attrs={"class":"form-control"}))
+    post_img = forms.FileField(label="Post Image", required=False, widget=forms.FileInput(attrs={"class":"form-control"}))
+    class Meta:
+        model = Post
+        fields = ['title', 'body', 'post_img']
+

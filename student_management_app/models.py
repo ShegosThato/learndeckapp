@@ -124,6 +124,23 @@ class StudentResult(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     objects = models.Manager()
 
+class Post(models.Model):
+    title = models.CharField(max_length=50)
+    slug = models.SlugField(db_index=True)
+    body = models.TextField()
+    date_created = models.DateTimeField(auto_now_add=True)
+    post_img = models.ImageField(upload_to='photos/%Y/%m/%d/', blank=True)
+
+    def get_absolute_url(self):
+        return reverse('discussions', kwargs={'slug': self.post.slug})
+
+    def __str__(self):
+        return self.title
+      
+    class Meta:
+        ordering = ('-date_created',)
+        index_together = (('id', 'slug'),)
+
 
 #Creating Django Signals
 

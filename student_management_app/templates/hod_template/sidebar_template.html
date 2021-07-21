@@ -79,6 +79,27 @@
             </p>
           </a>
         </li>
+        <li class="nav-item">
+          {% url 'manage_discussions' as manage_discussions %}
+          {% url 'edit_discussion' post_id=id as edit_discussion %}
+          <a href="{{ manage_discussions }}"
+            class="nav-link {% if request.path == manage_discussions %} active {% endif %} {% if request.path == edit_student %} active {% endif %}">
+            <i class="nav-icon fas fa-comments"></i>
+            <p>
+              Manage Discussions
+            </p>
+          </a>
+        </li>
+
+        <li class="nav-item">
+          {% url 'add_discussion' as add_discussion %}
+          <a href="{{ add_discussion }}" class="nav-link {% if request.path == add_discussion %} active {% endif %}">
+            <i class="nav-icon fas fa-comment"></i>
+            <p>
+              Add Discussion
+            </p>
+          </a>
+        </li>
 
         <li class="nav-item">
           {% url 'manage_course' as manage_course %}

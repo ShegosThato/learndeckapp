@@ -7,7 +7,6 @@ from .import HodViews, StaffViews, StudentViews
 urlpatterns = [
     path('', views.loginPage, name="login"),
     # path('accounts/', include('django.contrib.auth.urls')),
-    path('forum/', include('forum.urls')),
     path('doLogin/', views.doLogin, name="doLogin"),
     path('get_user_details/', views.get_user_details, name="get_user_details"),
     path('logout_user/', views.logout_user, name="logout_user"),
@@ -49,12 +48,16 @@ urlpatterns = [
     path('admin_get_attendance_student/', HodViews.admin_get_attendance_student, name="admin_get_attendance_student"),
     path('admin_profile/', HodViews.admin_profile, name="admin_profile"),
     path('admin_profile_update/', HodViews.admin_profile_update, name="admin_profile_update"),
+    path('add_discussion', HodViews.add_discussion, name="add_discussion"),
+    path('add_discussion_save', HodViews.add_discussion_save, name="add_discussion_save"),
+    path('manage_discussions', HodViews.manage_discussions, name="manage_discussions"),
+    path('edit_discussion', HodViews.edit_discussion, name="edit_discussion"),
+    path('edit_discussion_save', HodViews.edit_discussion_save, name="edit_discussion_save"),
     
 
 
     # URLS for Staff
     path('staff_home/', StaffViews.staff_home, name="staff_home"),
-    path('staff_take_attendance/', StaffViews.staff_take_attendance, name="staff_take_attendance"),
     path('get_students/', StaffViews.get_students, name="get_students"),
     path('save_attendance_data/', StaffViews.save_attendance_data, name="save_attendance_data"),
     path('staff_update_attendance/', StaffViews.staff_update_attendance, name="staff_update_attendance"),
@@ -68,8 +71,8 @@ urlpatterns = [
 
     # URSL for Student
     path('student_home/', StudentViews.student_home, name="student_home"),
-    path('student_view_attendance/', StudentViews.student_view_attendance, name="student_view_attendance"),
-    path('student_view_attendance_post/', StudentViews.student_view_attendance_post, name="student_view_attendance_post"),
+    path('discussions/', StudentViews.discussions, name="discussions"),
+    path('discussions_post/', StudentViews.discussions_post, name="discussions_post"),
     path('student_profile/', StudentViews.student_profile, name="student_profile"),
     path('student_profile_update/', StudentViews.student_profile_update, name="student_profile_update"),
     path('student_view_result/', StudentViews.student_view_result, name="student_view_result"),

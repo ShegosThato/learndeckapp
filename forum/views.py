@@ -3,12 +3,12 @@ from django.urls import reverse
 from django.views.generic import ListView, DetailView, TemplateView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Post, Comment
+from .models import Post
 
-class PostListView(ListView):
-    model = Post
-    template_name = "forum/list.html"
+def post_list(request):
+    posts = Posts.objects.all()
 
+    return render(request, 'forum/list.html', {'posts': posts})
 
 class PostDetailView(DetailView):
     model = Post

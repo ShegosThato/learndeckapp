@@ -7,11 +7,12 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 import json
 
-from student_management_app.models import CustomUser, Staffs, Courses, Subjects, Students, SessionYearModel, Attendance, AttendanceReport
-from .forms import AddStudentForm, EditStudentForm
+from student_management_app.models import CustomUser, Staffs, Courses, Subjects, Students, SessionYearModel, Attendance, AttendanceReport, Post
+from .forms import AddStudentForm, EditStudentForm, PostForm
 
 
 def admin_home(request):
+    posts = Post.objects.all()
     all_student_count = Students.objects.all().count()
     subject_count = Subjects.objects.all().count()
     course_count = Courses.objects.all().count()
@@ -57,15 +58,16 @@ def admin_home(request):
 
     students = Students.objects.all()
     for student in students:
-        attendance = AttendanceReport.objects.filter(student_id=student.id, status=True).count()
-        absent = AttendanceReport.objects.filter(student_id=student.id, status=False).count()
-        leaves = LeaveReportStudent.objects.filter(student_id=student.id, leave_status=1).count()
-        student_attendance_present_list.append(attendance)
-        student_attendance_leave_list.append(leaves+absent)
+        #attendance = AttendanceReport.objects.filter(student_id=student.id, status=True).count()
+        #absent = AttendanceReport.objects.filter(student_id=student.id, status=False).count()
+
+        #student_attendance_present_list.append(attendance)
+        #student_attendance_leave_list.append(leaves+absent)
         student_name_list.append(student.admin.first_name)
 
 
     context={
+        "posts": posts,
         "all_student_count": all_student_count,
         "subject_count": subject_count,
         "course_count": course_count,
@@ -324,7 +326,97 @@ def add_student(request):
     }
     return render(request, 'hod_template/add_student_template.html', context)
 
+def manage_discussions(request):
+    posts = Post.objects.all()
+    context = {
+        "posts": posts
+    }
+    return render(request, "hod_template/manage_discussions.html", context)
 
+def add_discussion(request):
+    form = PostForm()
+    context = {
+        "form": form
+    }
+    return render(request, 'hod_template/add_discussion.html', context)
+
+def add_discussion_save(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid Method")
+        return redirect('add_discussion')
+    else:
+        form = PostForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            body = form.cleaned_data['body']
+            post_img = form.cleaned_data['post_img']
+            # Getting Profile Pic first
+            # First Check whether the file is selected or not
+            # Upload only if file is selected
+            if len(request.FILES) != 0:
+                post_img = request.FILES['post_img']
+                fs = FileSystemStorage()
+                filename = fs.save(post_img.name, post_img)
+                post_img_url = fs.url(filename)
+            else:
+                post_img_url = None
+            try:
+                post = Post(title=title, body=body, post_img=post_img_url)
+                post.save()
+                redirect('manage_discussions')
+            except:
+                redirect('add_discussion')
+        else:
+            redirect('add_discussion')
+
+def edit_discussion(request, post_id):
+    post = Post.objects.get(pk=post_id)
+    form = PostForm()
+    # Filling the form with Data from Database
+    form.fields['title'].initial = post.title
+    form.fields['body'].initial = post.body
+    form.fields['post_img'].initial = post.post_img
+
+    context = {
+        "id": post_id,
+        "form": form
+    }
+    return render(request, "hod_template/edit_discussion.html", context)
+
+def edit_discussion_save(request, post_id):
+    post = Post.objects.get(pk=post_id)
+    if request.method != "POST":
+        messages.error(request, "Invalid Method")
+        return redirect('add_discussion')
+    else:
+        form = PostForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            body = form.cleaned_data['body']
+            post_img = form.cleaned_data['post_img']
+            # Getting Profile Pic first
+            # First Check whether the file is selected or not
+            # Upload only if file is selected
+            if len(request.FILES) != 0:
+                post_img = request.FILES['post_img']
+                fs = FileSystemStorage()
+                filename = fs.save(post_img.name, post_img)
+                post_img_url = fs.url(filename)
+            else:
+                post_img_url = None
+            try:
+                post = Post.objects.get(pk=post_id)
+                post.title = title
+                post.body = body
+                post.post_img = post_img_url
+                post.save()
+                redirect('manage_discussions')
+            except:
+                redirect('edit_discussion', post_id)
+        else:
+            redirect('edit_discussion', post_id)
 
 
 def add_student_save(request):
@@ -344,7 +436,6 @@ def add_student_save(request):
             session_year_id = form.cleaned_data['session_year_id']
             course_id = form.cleaned_data['course_id']
             gender = form.cleaned_data['gender']
-            phase = form.cleaned_data['phase']
 
             # Getting Profile Pic first
             # First Check whether the file is selected or not

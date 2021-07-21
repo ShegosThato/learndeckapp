@@ -5,11 +5,12 @@ from django.core.files.storage import FileSystemStorage #To upload Profile Pictu
 from django.urls import reverse
 import datetime # To Parse input DateTime into Python Date Time Object
 
-from student_management_app.models import CustomUser, Staffs, Courses, Subjects, Students, Attendance, AttendanceReport, StudentResult
+from student_management_app.models import CustomUser, Staffs, Courses, Subjects, Students, Attendance, AttendanceReport, StudentResult, Post
 
 
 def student_home(request):
     student_obj = Students.objects.get(admin=request.user.id)
+    posts = Post.objects.all()
     total_attendance = AttendanceReport.objects.filter(student_id=student_obj).count()
     attendance_present = AttendanceReport.objects.filter(student_id=student_obj, status=True).count()
     attendance_absent = AttendanceReport.objects.filter(student_id=student_obj, status=False).count()
@@ -36,26 +37,29 @@ def student_home(request):
         "total_subjects": total_subjects,
         "subject_name": subject_name,
         "data_present": data_present,
-        "data_absent": data_absent
+        "data_absent": data_absent,
+        "posts": posts,
     }
     return render(request, "student_template/student_home_template.html", context)
 
 
-def student_view_attendance(request):
+def discussions(request):
+    posts = Post.objects.all()
     student = Students.objects.get(admin=request.user.id) # Getting Logged in Student Data
     course = student.course_id # Getting Course Enrolled of LoggedIn Student
     # course = Courses.objects.get(id=student.course_id.id) # Getting Course Enrolled of LoggedIn Student
     subjects = Subjects.objects.filter(course_id=course) # Getting the Subjects of Course Enrolled
     context = {
-        "subjects": subjects
+        "subjects": subjects,
+        "posts": posts
     }
-    return render(request, "student_template/student_view_attendance.html", context)
+    return render(request, "student_template/discussions.html", context)
 
 
-def student_view_attendance_post(request):
+def discussions_post(request):
     if request.method != "POST":
         messages.error(request, "Invalid Method")
-        return redirect('student_view_attendance')
+        return redirect('discussions')
     else:
         # Getting all the Input Data
         subject_id = request.POST.get('subject')
@@ -88,7 +92,7 @@ def student_view_attendance_post(request):
             "attendance_reports": attendance_reports
         }
 
-        return render(request, 'student_template/student_attendance_data.html', context)
+        return render(request, 'student_template/discussions.html', context)
        
 
 
