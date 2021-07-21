@@ -18,7 +18,7 @@ Manage Discussions
       {% for post in posts %}
       <div class="row">
          <div class="card text-center shadow-lg p-3 mt-5 mb-1 bg-white " style="width: 80rem;">
-            <img src="{% url 'post.post_img.url' %}" class="card-img-top" alt="First Class">
+            <img src="{% static 'post.post_img.url' %}" class="card-img-top" alt="First Class">
             <div class="card-body">
                <h4 class="card-title">{{post.title }}</h4>
                <h6 class="card-subtitle text-muted">{{post.date_created}}</h6>
