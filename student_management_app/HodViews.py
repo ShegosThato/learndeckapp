@@ -412,7 +412,7 @@ def edit_discussion_save(request, post_id):
                 post.body = body
                 post.post_img = post_img_url
                 post.save()
-                redirect('manage_discussions')
+                return render (request,'manage_discussions')
             except:
                 redirect('edit_discussion', post_id)
         else:
