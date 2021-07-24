@@ -126,7 +126,7 @@ class StudentResult(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=50)
-    slug = models.SlugField(db_index=True)
+    slug = models.SlugField(db_index=True, default="")
     body = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
     post_img = models.ImageField(upload_to='photos/%Y/%m/%d/', blank=True)
