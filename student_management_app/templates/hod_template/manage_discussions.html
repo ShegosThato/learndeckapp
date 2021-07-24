@@ -15,19 +15,24 @@ Manage Discussions
 
 
       <!-- general form elements -->
+      {% if not posts %}
+      <h4 class="display-4"> No Discussion</h4>
+     
+      {% else%}
       {% for post in posts %}
       <div class="row">
          <div class="card text-center shadow-lg p-3 mt-5 mb-1 bg-white " style="width: 80rem;">
-            <img src="{% static post.post_img.url %}" class="card-img-top" alt="First Class">
             <div class="card-body">
                <h4 class="card-title">{{post.title }}</h4>
                <h6 class="card-subtitle text-muted">{{post.date_created}}</h6>
                <p class="card-text">{{ post.body }}</p>
-               <a href="{% url 'edit_discussion' post.pk %}" class="btn btn-danger">Read more</a>
+               <a href="{% url 'edit_discussion' post.id %}" class="btn btn-danger">Read more</a>
             </div>
          </div>
       </div>
       {% endfor %}
+      
+       {% endif%}
       <!-- /.card -->
 
 
